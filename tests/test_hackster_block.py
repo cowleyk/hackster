@@ -1,19 +1,52 @@
-from nio.block.terminals import DEFAULT_TERMINAL
+import responses
+import json
 from nio.signal.base import Signal
 from nio.testing.block_test_case import NIOBlockTestCase
 from ..hackster_block import Hackster
+from nio.block.terminals import DEFAULT_TERMINAL
+
+SAMPLE_RESPONSE = {
+    'metadata': {},
+    'records': [
+        {
+            'id': 19589,
+            'hid': '143801',
+            'name': 'The \'Tennis Ball\' Garage Stop Light',
+            'one_liner': 'Eliminate the need for a hanging tennis ball with this ultrasonic distance sensor & Arduino controlled stop light for perfect parking.',
+            'url': 'https://www.hackster.io/stuart/the-tennis-ball-garage-stop-light-143801',
+            'content_type': 'tutorial',
+            'duration': 6,
+            'difficulty': 'intermediate'
+        }
+    ]
+}
 
 
-class TestHackster(NIOBlockTestCase):
+class TestMojioVehicles(NIOBlockTestCase):
 
-    def test_process_signals(self):
-        """Signals pass through block unmodified."""
+    def setUp(self):
+        super().setUp()
+
+    @responses.activate
+    def test_request(self):
         blk = Hackster()
-        self.configure_block(blk, {})
+
+        responses.add(responses.POST, 'https://www.hackster.io/oauth/token',
+                      json={}, status=200)
+        responses.add(responses.GET, 'http://api.hackster.io/v2/projects',
+                      body=json.dumps(SAMPLE_RESPONSE), status=200,
+                      content_type='application/json')
+        self.configure_block(blk, {
+            'polling_interval': {
+                'seconds': 0  # We will drive polls with signals
+            },
+            'queries': ['dummy']
+        })
         blk.start()
-        blk.process_signals([Signal({"hello": "nio"})])
-        blk.stop()
+
+        blk.process_signals([Signal()])
         self.assert_num_signals_notified(1)
-        self.assertDictEqual(
-            self.last_notified[DEFAULT_TERMINAL][0].to_dict(),
-            {"hello": "nio"})
+        self.assertEqual(self.last_notified[DEFAULT_TERMINAL][0].name,
+                         'The \'Tennis Ball\' Garage Stop Light')
+
+        blk.stop()
