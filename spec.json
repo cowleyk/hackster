@@ -1,40 +1,68 @@
 {
-  "namespace/BlockName": {
-    "version": "1.0.0",
-    "description": "Description of the block.",
+  "nio/Hackster": {
+    "version": "0.1.0",
+    "description": "Block for pulling information about projects or products from Hackster.io.  Uses client only authentication.",
     "properties": {
-      "<property1>": {
-        "description": "Required description of the property"
+      "creds": {
+        "title": "Hackster Credentials",
+        "type": "ObjectType",
+        "description": "Client ID and Client Secret from your Hackster application",
+        "default": {
+          "client_id": "[[HACKSTER_CLIENT_ID]]",
+          "client_secret": "[[HACKSTER_CLIENT_SECRET]]"
+        }
       },
-      "<property2>": {
-        "default": "Optional metadata with any key.",
-        "description": "Required description of the property"
+      "endpoint": {
+        "title": "Hackster Endpoint to poll",
+        "type": "StringType",
+        "description": "Either projects or products depending what information you want to get.",
+        "default": "projects"
+      },
+      "include_query": {
+        "title": "Include Query Field",
+        "type": "StringType",
+        "description": "Whether to include queries in request to Hackster.",
+        "default": null
+      },
+      "polling_interval": {
+        "title": "Polling Interval",
+        "type": "TimeDeltaType",
+        "description": "How often Hackster is polled. When using more than one query. Each query will be polled at a period equal to the *polling interval* times the number of queries.",
+        "default": {
+          "seconds": 20
+        }
+      },
+      "queries": {
+        "title": "Query Strings",
+        "type": "ListType",
+        "description": "Inherited from base rest polling block but not used. Any random string should be entered in the field.",
+        "default": []
+      },
+      "retry_interval": {
+        "title": "Retry Interval",
+        "type": "TimeDeltaType",
+        "description": "When a url request fails, how long to wait before attempting to try again.",
+        "default": {
+          "seconds": 60
+        }
+      },
+      "retry_limit": {
+        "title": "Retry Limit",
+        "type": "IntType",
+        "description": "Max number of times to retry on a poll.",
+        "default": 3
       }
     },
     "inputs": {
-      "<input1 | default>": {
-        "description": "Required description of the input"
-      },
-      "<input2>": {
-        "description": "Required description of the input"
+      "default": {
+        "description": "Any list of signals."
       }
     },
     "outputs": {
-      "<output1 | default>": {
-        "description": "Required description of the output"
-      },
-      "<output2>": {
-        "description": "Required description of the output"
+      "default": {
+        "description": "Query results from Hackster sent as a list of signals."
       }
     },
-    "commands": {
-      "<command1>": {
-        "description": "Required description of the command",
-        "type": "Optional type and other metadata with any key."
-      },
-      "<command2>": {
-        "description": "Required description of the command"
-      }
-    }
+    "commands": {}
   }
 }

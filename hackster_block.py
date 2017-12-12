@@ -12,7 +12,7 @@ class HacksterCreds(PropertyHolder):
     client_id = StringProperty(title='Hackster App client ID',
                                default='[[HACKSTER_CLIENT_ID]]')
     client_secret = StringProperty(title='Hackster App client secret',
-                               default='[[HACKSTER_CLIENT_SECRET]]')
+                                   default='[[HACKSTER_CLIENT_SECRET]]')
 
 
 class Hackster(OAuth2PasswordGrant, RESTPolling):

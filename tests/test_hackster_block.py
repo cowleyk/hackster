@@ -12,8 +12,8 @@ SAMPLE_RESPONSE = {
             'id': 19589,
             'hid': '143801',
             'name': 'The \'Tennis Ball\' Garage Stop Light',
-            'one_liner': 'Eliminate the need for a hanging tennis ball with this ultrasonic distance sensor & Arduino controlled stop light for perfect parking.',
-            'url': 'https://www.hackster.io/stuart/the-tennis-ball-garage-stop-light-143801',
+            'one_liner': 'Eliminate the need for a hanging tennis ball ...',
+            'url': 'https://www.hackster.io/stuart/the-tennis-ball ...',
             'content_type': 'tutorial',
             'duration': 6,
             'difficulty': 'intermediate'
